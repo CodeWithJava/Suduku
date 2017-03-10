@@ -1,3 +1,10 @@
+/*
+** Exact Cover Problem
+** Quote from http://www.cnblogs.com/grenet/p/3145800.html
+** Author: 万仓一黍
+**
+**
+*/
 import java.util.List;
 import java.util.ArrayList;
 
