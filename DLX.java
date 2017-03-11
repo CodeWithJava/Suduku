@@ -140,5 +140,102 @@ public class DLX
 		col[c].resumeLR();
 	}
 
-	
+	public boolean solve(int [][] data)
+	{
+		init(data);
+		return solve(0);
+	}
+
+	private boolean solve(int depth)
+	{
+		if(head.L == head)
+		{
+			int [][] solution = new int [n][n];
+
+			for(int i = 0;i < n;i++)
+				for(int j = 0;j < n;j++)
+					solution[i][j] = data[i][j];
+
+			solutions.add(solution);
+
+			if(solutions.size() >= limitation)
+				return true;
+
+			return false;
+		}
+
+		int minSize = 1 << 30;
+		int c = -1;
+
+		for(DLXNode p = head.L;p != head;p = p.L)
+		{
+			if(size[p.c] < minSize)
+			{
+				minSize = size[p.c];
+				c = p.c;
+			}
+		}
+
+		cover(c);
+
+		for(DLXNode p = col[c].D;p != col[c];p = p.D)
+		{
+			p.R.L = p;
+
+			for(DLXNode cell = p.L;cell != p;cell = cell.L)
+				cover(cell.c);
+
+			p.R.L = p.L;
+
+			int x = p.r - 1;
+			data[x / (n * n)][x / n % n] = x % n + 1;
+
+			if(solve(depth + 1))
+				return true;
+
+			p.L.R = p;
+
+			for(DLXNode cell = p.R;cell != p;cell = cell.R)
+				resume(cell.c);
+
+			p.L.R = p.R;
+		}
+
+		resumt(c);
+		return false;
+	}
+
+	private void init(int [][] data)
+	{
+		solutions = new ArrayList<>();
+
+		for(int i = 0;i < n;i++)
+		{
+			for(int j = 0;j < n;j++)
+			{
+				if(data[i][j] > 0)
+					addNode(i, j, data[i][j]);
+				else
+				{
+					for(int k = 1;k <= n;k++)
+						addNode(i, j, k);
+				}
+			}
+		}
+	}
+
+	public void setLimitation(int limitation)
+	{
+		this.limitation = limitation;
+	}
+
+	public int getLimitation()
+	{
+		return this.limitation;
+	}
+
+	public List<int [][]> getSolutions()
+	{
+		return this.solutions;
+	}
 }
