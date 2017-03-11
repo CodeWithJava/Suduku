@@ -14,7 +14,7 @@ public class DLX
 	private static final int COL = 1024 + 50;
 	private static final int N = 4 * 9 * 9;
 	private static final int M = 3;
-	private static final int N = 9;
+	private static final int SCALE = M * M;
 
 	DLXNode [] row = new DLXNode[ROW];
 	DLXNode [] col = new DLXNode[COL];
@@ -23,7 +23,7 @@ public class DLX
 	private int n;
 	private int limitation = 2;
 	private int [] size = new int [COL];
-	int [][] data = new int [N][N];
+	int [][] data = new int [SCALE][SCALE];
 
 	List<int [][]> solutions;
 
