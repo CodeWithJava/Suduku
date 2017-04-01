@@ -24,6 +24,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import suduku.Sudoku.nextAL;
+import suduku.Sudoku.prevAL;
 
 
 
@@ -37,7 +39,6 @@ public class SudokuClient extends JPanel{
 	private static final int width = 9;
 	private static final int height = 9;
 	private int data[][] = new int[height][width];
-	private boolean enable[][] = new boolean[height][width];
 	private String infoStr = "";
 
 	JButton finish = new JButton("Finish"), request = new JButton("request"), clean = new JButton("Clean");
@@ -103,11 +104,13 @@ public class SudokuClient extends JPanel{
 		clean.addActionListener(new cleanAL());
 		add(clean);
 		
-		save.setBounds(100, 330, 75, 25);
+		save.setVisible(false);
+		save.setBounds(170, 330, 50, 25);
 		save.addActionListener(new saveAL());
 		add(save);
-	
-		load.setBounds(200, 330, 75, 25);
+
+		load.setVisible(false);
+		load.setBounds(230, 330, 50, 25);
 		load.addActionListener(new loadAL());
 		add(load);
 		
@@ -150,7 +153,6 @@ public class SudokuClient extends JPanel{
         				} else
         				{
         					sudokus[r][c].setText(Integer.toString(data[r][c]));
-        					enable[r][c] = true;
         					sudokus[r][c].setEnabled(false);
         				}
                     }
@@ -212,51 +214,19 @@ public class SudokuClient extends JPanel{
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			infoStr += "Save sudoku data.\n";
+			infoStr += "Request some new sudoku data.\n";
 			info.setText(infoStr);
-			for (int i = 0; i < height; ++i)
-			{
-				for (int j = 0; j < width; ++j)
-				{
-					try
-					{
-						data[i][j] = Integer.parseInt(sudokus[i][j].getText());
-						
-					} catch (NumberFormatException ex)
-					{
-						
-					}
-				}
-			}		}
+			out.println("REQUEST GAME");
+		}
 	}
 	
 	class loadAL implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			infoStr += "Load sudoku data.\n";
+			infoStr += "Request some new sudoku data.\n";
 			info.setText(infoStr);
-			for (int i = 0; i < height; ++i)
-			{
-				for (int j = 0; j < width; ++j)
-				{
-					try
-					{
-						if (data[i][j] == 0)
-        				{
-        					sudokus[i][j].setText("");
-        				} else
-        				{
-        					sudokus[i][j].setText(Integer.toString(data[i][j]));
-        				}
-						if(enable[i][j]) sudokus[i][j].setEnabled(false);
-						
-					} catch (NumberFormatException ex)
-					{
-						
-					}
-				}
-			}
+			out.println("REQUEST GAME");
 		}
 	}
 	
@@ -266,7 +236,8 @@ public class SudokuClient extends JPanel{
 		{
 			infoStr = "Clean sudoku data.\n";
 			info.setText(infoStr);
-
+			finish.setEnabled(true);
+			
 			int i, j;
 			for (i = 0; i < height; ++i)
 			{

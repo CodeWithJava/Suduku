@@ -37,7 +37,6 @@ public class SudokuClient extends JPanel{
 	private static final int width = 9;
 	private static final int height = 9;
 	private int data[][] = new int[height][width];
-	private boolean enable[][] = new boolean[height][width];
 	private String infoStr = "";
 
 	JButton finish = new JButton("Finish"), request = new JButton("request"), clean = new JButton("Clean");
@@ -150,7 +149,6 @@ public class SudokuClient extends JPanel{
         				} else
         				{
         					sudokus[r][c].setText(Integer.toString(data[r][c]));
-        					enable[r][c] = true;
         					sudokus[r][c].setEnabled(false);
         				}
                     }
@@ -249,7 +247,7 @@ public class SudokuClient extends JPanel{
         				{
         					sudokus[i][j].setText(Integer.toString(data[i][j]));
         				}
-						if(enable[i][j]) sudokus[i][j].setEnabled(false);
+
 						
 					} catch (NumberFormatException ex)
 					{

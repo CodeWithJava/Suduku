@@ -150,7 +150,6 @@ public class SudokuClient extends JPanel{
         				} else
         				{
         					sudokus[r][c].setText(Integer.toString(data[r][c]));
-        					enable[r][c] = true;
         					sudokus[r][c].setEnabled(false);
         				}
                     }
@@ -249,7 +248,7 @@ public class SudokuClient extends JPanel{
         				{
         					sudokus[i][j].setText(Integer.toString(data[i][j]));
         				}
-						if(enable[i][j]) sudokus[i][j].setEnabled(false);
+
 						
 					} catch (NumberFormatException ex)
 					{
