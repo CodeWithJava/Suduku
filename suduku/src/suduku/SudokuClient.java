@@ -39,12 +39,16 @@ public class SudokuClient extends JPanel{
 	private int data[][] = new int[height][width];
 	private boolean enable[][] = new boolean[height][width];
 	private String infoStr = "";
-
+	private final String ID;
+	private final String NAME;
+	
+	
+	
 	JButton finish = new JButton("Finish"), request = new JButton("request"), clean = new JButton("Clean");
 	JTextField sudokus[][] = new JTextField[height][width];
 	JTextPane info = new JTextPane();
 	JButton save = new JButton("Save"), load = new JButton("Load");
-	private JLabel messageLabel = new JLabel("");
+	JLabel messageLabel = new JLabel("");
 
     private static int PORT = 8901;
     private Socket socket;
@@ -56,8 +60,9 @@ public class SudokuClient extends JPanel{
      * Constructs the client by connecting to a server, laying out the
      * GUI and registering GUI listeners.
      */
-    public SudokuClient(String serverAddress) throws Exception {
-
+    public SudokuClient(String serverAddress,String iD2, String name) throws Exception {
+    	ID=iD2;
+    	NAME= name;
         // Setup networking
         socket = new Socket(serverAddress, PORT);
         in = new BufferedReader(new InputStreamReader(
@@ -67,6 +72,7 @@ public class SudokuClient extends JPanel{
         // Layout GUI
     	messageLabel.setBackground(Color.lightGray);
     	//frame.getContentPane().add(messageLabel, "South");
+    	messageLabel.setText("Welcome, "+ NAME);
     	setLayout(null);
         for (int r = 0; r < 3; ++r)
 		{
@@ -89,7 +95,6 @@ public class SudokuClient extends JPanel{
 				add(jp);
 			}
 		}
-        
         
         finish.setBounds(85, 300, 75, 25);
         finish.addActionListener(new finishAL());
@@ -125,7 +130,7 @@ public class SudokuClient extends JPanel{
         String response;
         try {
             response = in.readLine();
-            if (response.startsWith("WELCOME")) {
+            if (response.startsWith("WELCOME: "+ NAME)) {
                 char mark = response.charAt(8);
                 
                 frame.setTitle("Sudoku - Player " + mark);
@@ -279,33 +284,7 @@ public class SudokuClient extends JPanel{
 			}
 		}
 	}
-
-    
-    public static void main(String[] args) throws Exception {
-        while (true) {
-            String serverAddress = (args.length == 0) ? "localhost" : args[1];
-            SudokuClient client = new SudokuClient(serverAddress);
-            JFrame frame = new JFrame("Sudoku");
-            frame.getContentPane().add(client, "Center");
-            frame.getContentPane().add(client.messageLabel, "South");
-            frame.setLocationByPlatform(true);
-            frame.setSize(450, 400);
-            frame.setResizable(true);
-            frame.setVisible(true);
-  
-            client.play(frame);
-            int response = JOptionPane.showConfirmDialog(frame,
-                    "Want to play one more game?",
-                    "Congratulations, You Win",
-                    JOptionPane.YES_NO_OPTION);
-            frame.dispose();
-            if( response != JOptionPane.YES_OPTION){
-            	break;
-            }
-        }
-    }
-    
-    
+ 
     
     
     
